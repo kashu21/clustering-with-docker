@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rnodejs
+    username: ka21180
+    repository: registry.mygit.th-deg.de
+    container_name: nodejs
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  webserver:
+    image: rnginx
+    username: ka21180
+    repository: registry.mygit.th-deg.de
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    links:
+      - mongo
+    depends_on:
+      - nodejs
+    networks:
+      - app-network
+    mongo:
+    container_name: mongo
+    image: rmongodb
+    username: ka21180
+    repository: registry.mygit.th-deg.de
+    ports:
+      - '27017:27017'
+    depends_on:
+      - nodejs
+
+  networks:
+  app-network:
+    driver: bridge
