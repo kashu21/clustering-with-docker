@@ -1,42 +1,27 @@
 version: '3'
 
 services:
-  nodejs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: rnodejs
-    username: ka21180
-    repository: registry.mygit.th-deg.de
-    container_name: nodejs
+
+  app:
+    container_name: nginx-node-mongo
     restart: unless-stopped
-    networks:
-      - app-network
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - webserver
+      - mongo
 
   webserver:
-    image: rnginx
-    username: ka21180
-    repository: registry.mygit.th-deg.de
+    image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:rnginx"
     container_name: webserver
     restart: unless-stopped
     ports:
       - "80:80"
-    links:
-      - mongo
-    depends_on:
-      - nodejs
-    networks:
-      - app-network
-    mongo:
+
+  mongo:
     container_name: mongo
-    image: rmongodb
-    username: ka21180
-    repository: registry.mygit.th-deg.de
+    image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:rmongodb"
+    restart: unless-stopped
     ports:
       - '27017:27017'
-    depends_on:
-      - nodejs
-
-  networks:
-  app-network:
-    driver: bridge
