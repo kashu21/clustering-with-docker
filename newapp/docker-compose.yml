@@ -1,0 +1,26 @@
+version: '3.0'
+
+services:
+
+  nodejs:
+    build: .
+    image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:nodejs"
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    links:
+      - nginx
+      - mongo
+
+  nginx:
+    image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:nginx"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+
+  mongo:
+    image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:mongo"
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+
