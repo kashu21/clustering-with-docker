@@ -4,7 +4,7 @@ const os = require("os");
 const app=express();
 
 app.get("/", (req, res) => {
-    res.send("Hello from Swarm " + os.hostname());
+    res.send("Hello from Swarm " + os.hostname()); //os.hostname()--Returns the hostname of the operating system.
 });
 
 app.listen(3000, () => {
