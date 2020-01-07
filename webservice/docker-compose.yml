@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.7'
 
 services:
 
@@ -6,7 +6,6 @@ services:
     image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:nodejs"
     ports:
       - "3000:3000"
-    restart: on-failure
     deploy:
       replicas: 3
 
@@ -14,7 +13,6 @@ services:
     image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:nginx"
     ports:
       - "80:80"
-    restart: unless-stopped
     deploy:
       replicas: 3
 
@@ -22,17 +20,6 @@ services:
     image: "registry.mygit.th-deg.de/ka21180/clustering-mit-docker:mongo"
     ports:
       - '27017:27017'
-    restart: always
     deploy:
       replicas: 3
-
-  visualizer:
-    image: "dockersamples/visualizer:stable"
-    ports:
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
 
